@@ -1,0 +1,68 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/_template.xhtml">
+	
+	<ui:define name="corpo">
+		<h:form id="frm">
+			<p:messages styleClass="error" autoUpdate="true" closable="true" />
+				<!-- NOTA FISCAL -->
+					<p:panelGrid header="Dados da nota" id="painelNota">
+						<p:outputLabel value="CNPJ do Cliente" for="cnpj"/>
+						<p:inputMask value="#{notaFiscalBean.notaFiscal.cnpj}" id="cnpj" mask="99.999.9999/9999-99" placeholder="Digite o CNPJ"/>
+						
+						<p:outputLabel value="Data:" for="data"/>
+						<p:calendar value="#{notaFiscalBean.notaFiscal.data.time}" pattern="dd/MM/yyyy" id="data" placeholder="Digite a data"/>
+					</p:panelGrid>
+				
+				<!-- ITENS DA NOTA -->
+					<p:panel header="Itens da Nota" id="painelItens">
+						<h:outputLabel value="Produto" for="produto"/>
+						<h:selectOneMenu value="#{notaFiscalBean.idProduto}"  id="produto">
+							<f:selectItems value="#{produtoBean.produtos}" var="produto" itemLabel="#{produto.nome}" itemValue="#{produto.id}"/>
+						</h:selectOneMenu>
+						
+						<p:outputLabel value="Quantidade" for="quantidade"/>
+						<p:inputText value="#{notaFiscalBean.item.quantidade}" id="quantidade"/>
+						
+						<p:commandButton value="Adicionar" action="#{notaFiscalBean.adicionarItem}" process="frm:painelItens" update=":frm:painelItens :frm:tabela" />
+					</p:panel>
+				
+					<h2>Itens da nota fiscal</h2>
+				
+					<p:dataTable id="tabela" value="#{notaFiscalBean.notaFiscal.itens}" var="item" styleClass="dados" rowClasses="impar,par">
+						<p:column headerText="Nome" >
+							<h:outputText value="#{item.produto.nome}"/>
+						</p:column>
+						
+						<p:column headerText="R$ Valor unitário">
+							<h:outputText value="#{item.valorUnitario}">
+								<f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="Quantidade">
+							<h:outputText value="#{item.quantidade}"/>
+						</p:column>
+						
+						<p:column headerText="R$ Total">
+							<h:outputText value="#{item.total}">
+								<f:convertNumber locale="pt_BR" currencySymbol="R$" type="currency"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column headerText="Ação">
+							<p:commandLink value="Remover" action="#{notaFiscalBean.removerItem}" process="@this" update=":frm:tabela">
+								<f:setPropertyActionListener value="#{item}" target="#{notaFiscalBean.item}"/>
+							</p:commandLink>
+						</p:column>
+						
+					</p:dataTable>
+					<p:commandButton value="Salvar" action="#{notaFiscalBean.salvar}" process="@form" update=":frm"/>									
+		</h:form>
+	</ui:define>
+</ui:composition>
+		

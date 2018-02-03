@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsf/composite/componentes" >
+	
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<h:outputStylesheet library="css" name="style.css" />
+</h:head>
+<h:body>
+
+	<div id="cabecalho">
+		<h:graphicImage library="imagens" name="logo-uber.png" id="logoCompany" />
+	</div>
+	
+
+	<div id="usuarioLogado">
+		<h:form>
+		<h:outputText value="Logado como: #{usuarioLogadoBean.usuario.login}" rendered="#{usuarioLogadoBean.usuario != null}"/> 
+		<h:commandLink value="[Sair]" action="#{loginBean.deslogar}" rendered="#{loginBean.isLogado()}"/>
+		</h:form>
+	</div>
+
+	<div id="conteudo">
+		<h:form>
+			<p:menubar rendered="#{loginBean.isLogado()}" >
+				<p:menuitem value="Produtos" url="/produtos.xhtml"/>	
+				<p:submenu label="Notas Fiscais">
+					<p:menuitem value="Cadastro" url="/notafiscal.xhtml"/>
+					<p:menuitem value="Lista" url="/listaNotas.xhtml"/>
+				</p:submenu>		
+				<p:menuitem value="Logout" action="#{loginBean.deslogar}"/>
+			</p:menubar>
+		</h:form>
+		<ui:insert name="corpo"/>
+	</div>
+	
+	<div id="rodape">
+		Copyright 2018.
+		Todos os Direiros Reservados a Weslley Alencar
+	</div>
+	
+</h:body>
+</html>

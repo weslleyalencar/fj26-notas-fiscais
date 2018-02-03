@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/_template.xhtml">
+	<ui:define name="corpo">
+	
+		<h2>Lista de notas fiscais</h2>
+		
+		<h:form>
+			<p:dataTable var="notaFiscal" value="#{listaNotasFiscaisBean.dataModelNostasFiscais}" paginator="true" rows="15" lazy="true">
+				<p:column headerText="CNPJ">
+					<h:outputText value="#{notaFiscal.cnpj}"/>
+				</p:column>
+				
+				<p:column headerText="Data">
+					<h:outputText value="#{notaFiscal.data.time}">
+						<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Itens">
+					<h:outputText value="#{notaFiscal.itens.size()}"/>
+				</p:column>
+				
+				<p:column headerText="Ação">
+					<h:commandLink value="Editar" action="#{listaNotasFiscaisBean.editar}">
+						<f:setPropertyActionListener value="#{notaFiscal}" target="#{listaNotasFiscaisBean.notaFiscal}"/>
+					</h:commandLink>
+				</p:column>
+			
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
